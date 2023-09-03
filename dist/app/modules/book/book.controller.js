@@ -24,7 +24,7 @@ const createBook = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
-        message: 'Book retrived successfully',
+        message: 'Book created successfully',
         data: result,
     });
 }));
@@ -35,7 +35,7 @@ const getAllBooks = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, vo
     (0, sendResponse_1.default)(res, {
         success: true,
         statusCode: http_status_1.default.OK,
-        message: 'Categories retrived successfully',
+        message: 'Books retrived successfully',
         data: result,
     });
 }));

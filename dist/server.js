@@ -19,7 +19,7 @@ function bootstrap() {
     return __awaiter(this, void 0, void 0, function* () {
         const server = app_1.default.listen(config_1.default.port, () => {
             // logger.info(`Server running on port ${config.port}`);
-            console.log(`Server running on port ${config_1.default.port}`);
+            console.log(`book eater Server running on port ${config_1.default.port}`);
         });
         const exitHandler = () => {
             if (server) {
