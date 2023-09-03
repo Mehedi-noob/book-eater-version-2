@@ -5,7 +5,6 @@ export type IGenericResponse<T> = {
     page: number;
     size: number;
     total: number;
-    totalPage: number;
   };
   data: T;
 };

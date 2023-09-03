@@ -1,37 +1,37 @@
-# Book Catalog Backend Assignment - Prisma | PostgreSQL | Node.js | Express.js
+# book eater Backend
 
-## Live Link: https://book-catalog-version-2.vercel.app
+## Live link: https://book-catalog-version-2.vercel.app
 
-### Application Routes:
+## API Routes:
 
-#### User
+## User Routes
 
-- https://book-catalog-amber.vercel.app/api/v1/auth/signup (POST)
-- https://book-catalog-amber.vercel.app/api/v1/users (GET)
-- https://book-catalog-amber.vercel.app/api/v1/users/f68249fb-e59f-476c-adbe-96c0ff4d6a2c (GET)
-- https://book-catalog-amber.vercel.app/api/v1/users/f68249fb-e59f-476c-adbe-96c0ff4d6a2c (PATCH)
-- https://book-catalog-amber.vercel.app/api/v1/users/f68249fb-e59f-476c-adbe-96c0ff4d6a2c (DELETE)
-- https://book-catalog-amber.vercel.app/api/v1/profile (GET)
+- `/api/v1/auth/signup` (POST)
+- `/api/v1/users` (GET)
+- `/api/v1/users/7cb85a5e-1363-4ae4-be70-10ac788cfbe2` (Single GET)
+- `/api/v1/users/7cb85a5e-1363-4ae4-be70-10ac788cfbe2` (PATCH)
+- `/api/v1/users/9fd1411c-a3ce-46df-8af1-39c2e25bfa6b` (DELETE)
+- `/api/v1/profile` (GET)
 
-### Category
+## Category Routes
 
-- https://book-catalog-amber.vercel.app/api/v1/categories/create-category (POST)
-- https://book-catalog-amber.vercel.app/api/v1/categories (GET)
-- https://book-catalog-amber.vercel.app/api/v1/categories/b460ddad-919b-4e5e-8161-5002018840be (GET)
-- https://book-catalog-amber.vercel.app/api/v1/categories/b460ddad-919b-4e5e-8161-5002018840be (PATCH)
-- https://book-catalog-amber.vercel.app/api/v1/categories/b460ddad-919b-4e5e-8161-5002018840be (DELETE)
+- `/api/v1/categories/create-category` (POST)
+- `/api/v1/categories` (GET)
+- `/api/v1/categories/50d49f06-54da-4988-8a9a-4f9f4fe81d10` (Single GET)
+- `/api/v1/categories/dd15db2a-a3f2-4e64-8b0f-aef86b877711` (PATCH)
+- `/api/v1/categories/dd15db2a-a3f2-4e64-8b0f-aef86b877711` (DELETE)
 
-### Books
+## Books Routes
 
-- https://book-catalog-amber.vercel.app/api/v1/books/create-book (POST)
-- https://book-catalog-amber.vercel.app/api/v1/books (GET)
-- https://book-catalog-amber.vercel.app/api/v1/books/b460ddad-919b-4e5e-8161-5002018840be/category (GET)
-- https://book-catalog-amber.vercel.app/api/v1/books/1a34aa8b-48a1-4aa4-ada5-81ac4509eade (GET)
-- https://book-catalog-amber.vercel.app/api/v1/books/1a34aa8b-48a1-4aa4-ada5-81ac4509eade (PATCH)
-- https://book-catalog-amber.vercel.app/api/v1/books/1a34aa8b-48a1-4aa4-ada5-81ac4509eade (DELETE)
+- `/api/v1/books/create-book` (POST)
+- `/api/v1/books` (GET)
+- `/api/v1/books/:categoryId/category` (GET)
+- `/api/v1/books/daf874f9-cf3c-434a-ae1d-4b2af38acf1b` (GET)
+- `/api/v1/books/75c33fd3-53b0-4df5-a717-0d9e24ac2b4c` (PATCH)
+- `/api/v1/books/75c33fd3-53b0-4df5-a717-0d9e24ac2b4c` (DELETE)
 
-### Orders
+## Orders Routes
 
-- https://book-catalog-amber.vercel.app/api/v1/orders/create-order (POST)
-- https://book-catalog-amber.vercel.app/api/v1/orders (GET)
-- https://book-catalog-amber.vercel.app/api/v1/orders/4d904ab6-3626-40a4-a3ca-94e835f466ab (GET)
+- `/api/v1/orders/create-order` (POST)
+- `/api/v1/orders` (GET)
+- `/api/v1/orders/dd5428ba-3bd8-4d56-b820-da3551285a82` (GET)
