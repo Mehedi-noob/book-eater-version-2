@@ -1,6 +1,6 @@
 # Book Catalog Backend Assignment - Prisma | PostgreSQL | Node.js | Express.js
 
-## Live Link: https://book-catalog-amber.vercel.app/
+## Live Link: https://book-catalog-version-2.vercel.app
 
 ### Application Routes:
 
