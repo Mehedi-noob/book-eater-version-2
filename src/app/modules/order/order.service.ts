@@ -1,92 +1,65 @@
 import { Order, Prisma } from '@prisma/client';
-import { IOrderedBooksRequest } from './order.interface';
-import { JwtPayload } from 'jsonwebtoken';
-import prisma from '../../../shared/prisma';
-import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
+import ApiError from '../../../errors/ApiError';
+import { prisma } from '../../../shared/prisma';
 
-const insertIntoDB = async (
-  data: IOrderedBooksRequest,
-  userData: JwtPayload
-): Promise<Order> => {
-  const result = await prisma.$transaction(async transaction => {
-    const order = await transaction.order.create({
-      data: {
-        userId: userData.userId,
-      },
-    });
-
-    for (const index of data.orderedBooks) {
-      await transaction.orderedBook.create({
-        data: {
-          bookId: index.bookId,
-          orderId: order.id,
-          quantity: index.quantity,
-        },
-      });
-    }
-
-    const result = await transaction.order.findUnique({
-      where: {
-        id: order.id,
-      },
-      include: {
-        orderedBooks: true,
-      },
-    });
-
-    if (!result) {
-      throw new ApiError(
-        httpStatus.INTERNAL_SERVER_ERROR,
-        'Something went wrong'
-      );
-    }
-
-    return result;
+const createOrder = async (data: Order, userId: string): Promise<Order> => {
+  const result = await prisma.order.create({
+    data: {
+      ...data,
+      userId,
+      orderedBooks: data.orderedBooks as Prisma.InputJsonValue,
+    },
   });
 
   return result;
 };
 
-const getAllOrders = async (user: JwtPayload): Promise<Order[]> => {
-  const whereConditions: Prisma.OrderWhereInput =
-    user.role === 'admin' ? {} : { userId: user.userId };
+const getAllOrders = async (
+  userId: string,
+  role: string
+): Promise<Order[] | null> => {
+  let result = null;
+  if (role === 'customer') {
+    result = await prisma.order.findMany({
+      where: {
+        userId,
+      },
+    });
+  }
 
-  const result = await prisma.order.findMany({
-    where: whereConditions,
-    include: {
-      orderedBooks: true,
-    },
-  });
+  if (role === 'admin') {
+    result = await prisma.order.findMany({});
+  }
 
   return result;
 };
 
 const getSingleOrder = async (
-  orderId: string,
-  user: JwtPayload
-): Promise<Order> => {
-  const whereConditions: Prisma.OrderWhereInput =
-    user.role === 'admin'
-      ? { id: orderId }
-      : { id: orderId, userId: user.userId };
-
+  id: string,
+  userId: string,
+  role: string
+): Promise<Order | null> => {
   const result = await prisma.order.findUnique({
-    where: whereConditions as Prisma.OrderWhereUniqueInput,
-    include: {
-      orderedBooks: true,
+    where: {
+      id,
     },
   });
 
-  if (!result) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'Order not found or unauthorized');
+  if (role === 'customer') {
+    if (result?.userId !== userId) {
+      throw new ApiError(
+        httpStatus.FORBIDDEN,
+        'You are not allowed to access this data.'
+      );
+    }
   }
 
   return result;
 };
 
 export const OrderService = {
-  insertIntoDB,
+  createOrder,
   getAllOrders,
   getSingleOrder,
 };

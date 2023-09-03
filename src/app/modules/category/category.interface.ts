@@ -5,7 +5,7 @@ export type ISingleCategory = {
     author: string;
     price: number;
     genre: string;
-    publicationDate: Date;
+    publicationDate: string;
     categoryId: string;
     createdAt: Date;
     updatedAt: Date;
@@ -14,11 +14,4 @@ export type ISingleCategory = {
   title?: string | undefined;
   createdAt?: Date | undefined;
   updatedAt?: Date | undefined;
-};
-
-export type IBookFilterRequest = {
-  search?: string;
-  minPrice?: string;
-  maxPrice?: string;
-  category?: string;
 };

@@ -1,20 +1,17 @@
-import { Request, Response } from 'express';
-import catchAsync from '../../../shared/catchAsync';
-import { ProfileService } from './profile.service';
-import { JwtPayload } from 'jsonwebtoken';
-import sendResponse from '../../../shared/sendResponse';
-import { User } from '@prisma/client';
+import { RequestHandler } from 'express';
 import httpStatus from 'http-status';
+import catchAsync from '../../../shared/catchAsync';
+import sendResponse from '../../../shared/sendResponse';
+import { ProfileService } from './profile.service';
 
-const getProfile = catchAsync(async (req: Request, res: Response) => {
-  const result = await ProfileService.getProfile(
-    (req.user as JwtPayload).userId
-  );
+const getProfile: RequestHandler = catchAsync(async (req, res) => {
+  const user = req.user;
+  const result = await ProfileService.getProfile(user?.userId);
 
-  sendResponse<User>(res, {
-    statusCode: httpStatus.OK,
+  sendResponse(res, {
     success: true,
-    message: 'Profile retrieved successfully',
+    statusCode: httpStatus.OK,
+    message: 'Profile retrived successfully',
     data: result,
   });
 });

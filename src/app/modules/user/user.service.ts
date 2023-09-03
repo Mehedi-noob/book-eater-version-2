@@ -1,52 +1,90 @@
 import { User } from '@prisma/client';
-import prisma from '../../../shared/prisma';
-import ApiError from '../../../errors/ApiError';
-import httpStatus from 'http-status';
+import { prisma } from '../../../shared/prisma';
 
-const getAllUsers = async (): Promise<User[]> => {
-  const result = await prisma.user.findMany();
+const getAllUser = async (): Promise<Partial<User>[]> => {
+  const result = await prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: false,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
+  });
+
   return result;
 };
 
-const getOneFromDB = async (id: string): Promise<User> => {
+const getSingleUser = async (id: string): Promise<Partial<User> | null> => {
   const result = await prisma.user.findUnique({
     where: {
       id,
     },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: false,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
   });
-
-  if (!result) throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
 
   return result;
 };
 
-const updateUserInDB = async (
+const updateUser = async (
   id: string,
   payload: Partial<User>
-): Promise<User | null> => {
+): Promise<Partial<User> | null> => {
   const result = await prisma.user.update({
     where: {
       id,
     },
-    data: {
-      ...payload,
+    data: payload,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: false,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
     },
   });
+
   return result;
 };
 
-const deleteUser = async (id: string): Promise<User | null> => {
+const deleteUser = async (id: string): Promise<Partial<User> | null> => {
   const result = await prisma.user.delete({
     where: {
       id,
     },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: false,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
   });
+
   return result;
 };
 
 export const UserService = {
-  getAllUsers,
-  getOneFromDB,
-  updateUserInDB,
+  getAllUser,
+  getSingleUser,
+  updateUser,
   deleteUser,
 };

@@ -1,37 +1,37 @@
 import express from 'express';
-import { AuthRoutes } from '../modules/auth/auth.route';
-import { UserRoutes } from '../modules/user/user.route';
-import { CategoryRoutes } from '../modules/category/category.route';
-import { BookRoutes } from '../modules/book/book.route';
-import { OrderRoutes } from '../modules/order/order.route';
-import { ProfileRoutes } from '../modules/profile/profile.route';
+import { AuthRouter } from '../modules/auth/auth.router';
+import { BookRouter } from '../modules/book/book.router';
+import { CategoryRouter } from '../modules/category/category.router';
+import { OrderRouter } from '../modules/order/order.router';
+import { ProfileRouter } from '../modules/profile/profile.router';
+import { UserRouter } from '../modules/user/user.router';
 
 const router = express.Router();
 
 const moduleRoutes = [
   {
     path: '/auth',
-    routes: AuthRoutes,
+    routes: AuthRouter,
   },
   {
     path: '/users',
-    routes: UserRoutes,
+    routes: UserRouter,
   },
   {
     path: '/categories',
-    routes: CategoryRoutes,
+    routes: CategoryRouter,
   },
   {
     path: '/books',
-    routes: BookRoutes,
+    routes: BookRouter,
   },
   {
     path: '/orders',
-    routes: OrderRoutes,
+    routes: OrderRouter,
   },
   {
     path: '/profile',
-    routes: ProfileRoutes,
+    routes: ProfileRouter,
   },
 ];
 

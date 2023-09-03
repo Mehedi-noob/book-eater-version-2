@@ -1,44 +1,60 @@
 import { User } from '@prisma/client';
-import prisma from '../../../shared/prisma';
-import ApiError from '../../../errors/ApiError';
 import httpStatus from 'http-status';
+import { Secret } from 'jsonwebtoken';
+import config from '../../../config';
+import ApiError from '../../../errors/ApiError';
 import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import { prisma } from '../../../shared/prisma';
+import { ILoginUser, ILoginUserResponse } from './auth.interface';
 
-const insertIntoDB = async (data: User): Promise<User> => {
+const SignUp = async (data: User): Promise<Partial<User>> => {
   const result = await prisma.user.create({
     data,
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: false,
+      role: true,
+      contactNo: true,
+      address: true,
+      profileImg: true,
+    },
   });
+
   return result;
 };
 
-const login = async (data: Partial<User>): Promise<string> => {
-  const user = await prisma.user.findUnique({
-    where: {
-      email: data.email
-    },
-  });
+const login = async (payload: ILoginUser): Promise<ILoginUserResponse> => {
+  const { email, password } = payload;
 
-  if (!user) {
-    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
+  const isUserExist = await prisma.user.findUnique({ where: { email } });
+
+  if (!isUserExist) {
+    throw new ApiError(httpStatus.NOT_FOUND, 'User does not exist');
   }
 
-  if (user.password !== data.password) {
-    throw new ApiError(httpStatus.FORBIDDEN, 'Incorrect Credentials');
+  if (isUserExist?.password && password !== isUserExist.password) {
+    throw new ApiError(httpStatus.UNAUTHORIZED, 'password is incorrect');
   }
 
-  const result = jwtHelpers.createToken(
+  const { id, role } = isUserExist;
+
+  const token = jwtHelpers.createToken(
     {
-      userId: user.id,
-      role: user.role,
+      role: role,
+      userId: id,
     },
-    process.env.JWT_SECRET as string,
-    '1y'
+    config.jwt.secret as Secret,
+    config.jwt.expires_in as string
   );
 
-  return result;
+  return {
+    token,
+  };
 };
 
 export const AuthService = {
-  insertIntoDB,
+  SignUp,
   login,
 };
